@@ -47,7 +47,9 @@ function bdLineHtml(t, isNew) {
   else if (/^  “/.test(t)) cls = 'letter';
   else if (/^  /.test(t)) cls = 'end';
   if (t === '') return '<p>&nbsp;</p>';
-  return '<p class="' + cls + (isNew ? ' new' : '') + '">' + bdEsc(t) + '</p>';
+  var body = bdEsc(t);
+  if (cls === 'end') body = body.replace(/　(Steve 那边：|（这天你)/g, '<br>　　　　$1');
+  return '<p class="' + cls + (isNew ? ' new' : '') + '">' + body + '</p>';
 }
 
 function bdDraw() {

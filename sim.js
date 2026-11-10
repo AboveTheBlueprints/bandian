@@ -52,7 +52,7 @@ function bdMorning(s, out) {
     s.bacon += 3;
     s.st_bacon = 3;
   }
-  if (s.warned && s.day === s.warned + 1) out.push('下游捎回 Steve 一句话：“知道了。我把培根埋进雪里了，这几天吃豆子。”');
+  if (s.warned && s.day === s.warned + 1) out.push('下游捎回 Steve 一句话：“你说它回回先舔锅？那我把培根埋进雪里，这几天吃豆子。”');
   if (s.spot === '营地') out.push('斑点在营地里，趴在雪上看着你。');
   else out.push('斑点不在。最后一回见它，' + BD_LAST_SEEN[s.last_seen] + '。');
   out.push('库里培根：' + s.bacon + ' 扇。钱：' + s.money + ' 块。' + (s.flour ? '面粉：' + s.flour + ' 袋。' : ''));
@@ -133,7 +133,7 @@ function bdAct(s, a, out) {
   if (s.phase === '早饭') {
     if (a === '捎信') {
       s.warned = s.day;
-      out.push('有个往下游去的人在你营地喝了碗茶。你托他给 Steve 捎句话：斑点是闻着培根锅去的。他点点头走了。');
+      out.push('有个往下游去的人在你营地喝了碗茶。你托他给 Steve 捎句话，把斑点这几天是怎么回来的跟他说了一遍。他点点头走了。');
       s.today['捎信'] = true;
       return;
     }
@@ -167,15 +167,16 @@ function bdAct(s, a, out) {
                    '一个往道森送公文的信差出了 %d 块。他说这么好的狗，一路上就能拉熟。',
                    '一个刚上岸的新手出了 %d 块。他看着它的眼睛看了好一会儿，才把钱递过来。',
                    '一个老头出了 %d 块，说是这条河上剩下唯一一个没听说过它的人了。'];
-      out.push(lines[s.sold - 1].replace('%d', p));
+      out.push(lines[s.sold - 1].replace('%d', p).replace('你们说', s.day >= 5 ? '你说' : '你们说'));
       s.today['甩'] = '卖（' + p + ' 块）';
     } else if (a === '岛') {
       s.spot = '岛';
-      out.push('你们划船到河心，它一跳上沙洲，你们就把船撑开了。它站在沙洲上看着你们走，没叫。');
+      var W = s.day <= 4 ? '你们' : '你';
+      out.push(W + '划船到河心，它一跳上沙洲，' + W + '就把船撑开了。它站在沙洲上看着' + W + '走，没叫。');
       s.today['甩'] = '扔沙洲';
     } else if (a === '拴') {
       s.spot = '拴';
-      out.push('你们拿最粗的绳子把它拴在下游那间旧木屋里，门从外面顶上了。');
+      out.push((s.day <= 4 ? '你们' : '你') + '拿最粗的绳子把它拴在下游那间旧木屋里，门从外面顶上了。');
       s.today['甩'] = '拴旧木屋';
     } else if (a === '换') {
       s.spot = '换';
